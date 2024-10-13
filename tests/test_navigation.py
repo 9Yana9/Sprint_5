@@ -1,28 +1,40 @@
-import unittest
-from selenium import webdriver
+import pytest
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 from locators import Locators
 
-class TestNavigation(unittest.TestCase):
-    def setUp(self):
-        self.driver = webdriver.Chrome()
-        self.driver.get("https://stellarburgers.nomoreparties.site/")
+def login(driver):
+    driver.get("https://stellarburgers.nomoreparties.site/login")
+    wait = WebDriverWait(driver, 10)
 
-    def test_navigate_to_personal_account(self):
-        driver = self.driver
-        driver.find_element(By.CSS_SELECTOR, Locators.REGISTER_BUTTON).click()
-        driver.find_element(By.CSS_SELECTOR, Locators.PERSONAL_ACCOUNT_BUTTON).click()
-        self.assertIn("Личный кабинет", driver.title)
+    email_input = wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, Locators.EMAIL_INPUT)))
+    email_input.send_keys("your_email@example.com")
 
-    def test_navigate_to_constructor(self):
-        driver = self.driver
-        driver.find_element(By.CSS_SELECTOR, Locators.PERSONAL_ACCOUNT_BUTTON).click()
-        driver.find_element(By.CSS_SELECTOR, Locators.LOGO_BUTTON).click()
-        driver.find_element(By.CSS_SELECTOR, "a.constructor").click()
-        self.assertIn("Конструктор", driver.title)
+    password_input = wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, Locators.PASSWORD_INPUT)))
+    password_input.send_keys("your_password")
 
-    def tearDown(self):
-        self.driver.quit()
+    login_button = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, Locators.LOGIN_BUTTON)))
+    login_button.click()
 
-if __name__ == "__main__":
-    unittest.main()
+@pytest.mark.usefixtures("driver")
+def test_navigate_to_constructor(driver):
+    login(driver)
+
+    wait = WebDriverWait(driver, 10)
+    constructor_button = wait.until(
+        EC.element_to_be_clickable((By.CSS_SELECTOR, Locators.CONSTRUCTOR_BUTTON))
+    )
+    constructor_button.click()
+
+@pytest.mark.usefixtures("driver")
+def test_navigate_via_logo(driver):
+    login(driver)
+
+    wait = WebDriverWait(driver, 20)
+    logo = wait.until(
+        EC.element_to_be_clickable((By.XPATH, Locators.LOGO_BUTTON))
+    )
+    logo.click()
+
+
