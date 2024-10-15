@@ -1,5 +1,3 @@
-# test_login_logout.py
-from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from locators import Locators
@@ -9,22 +7,25 @@ def test_login_and_logout(driver):
 
     driver.get("https://stellarburgers.nomoreparties.site/login")
 
-    email_input = wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, Locators.EMAIL_INPUT)))
-    email_input.send_keys("your_email@example.com")
+    email_input = wait.until(EC.visibility_of_element_located(Locators.EMAIL_INPUT))
+    email_input.send_keys("yana_kivachickaya_11_222@yandex.ru")
 
-    password_input = wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, Locators.PASSWORD_INPUT)))
-    password_input.send_keys("your_password")
+    password_input = wait.until(EC.visibility_of_element_located(Locators.PASSWORD_INPUT))
+    password_input.send_keys("123456")
 
-    login_button = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, Locators.LOGIN_BUTTON)))
+    login_button = wait.until(EC.element_to_be_clickable(Locators.LOGIN_BUTTON))
     login_button.click()
 
-    wait.until(EC.visibility_of_element_located((By.XPATH, Locators.ACCOUNT_BUTTON)))
+    wait.until(EC.visibility_of_element_located(Locators.ACCOUNT_BUTTON))
 
-    account_button = wait.until(EC.element_to_be_clickable((By.XPATH, Locators.ACCOUNT_BUTTON)))
+    account_button = wait.until(EC.element_to_be_clickable(Locators.ACCOUNT_BUTTON))
     account_button.click()
 
-    logout_button = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, Locators.LOGOUT_BUTTON)))
+    logout_button = wait.until(EC.element_to_be_clickable(Locators.LOGOUT_BUTTON))
     logout_button.click()
+
+    wait.until(EC.url_to_be("https://stellarburgers.nomoreparties.site/login"))
+    assert driver.current_url == "https://stellarburgers.nomoreparties.site/login"
 
 
 

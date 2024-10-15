@@ -1,8 +1,9 @@
-# test_personal_account.py
-from selenium.webdriver.common.by import By
+import pytest
 from locators import Locators
 
+@pytest.mark.usefixtures("driver")
 def test_navigate_to_personal_account(driver):
-    driver.find_element(By.CSS_SELECTOR, Locators.PERSONAL_ACCOUNT_BUTTON).click()
+    driver.find_element(*Locators.PERSONAL_ACCOUNT_BUTTON).click()
 
+    assert driver.current_url == "https://stellarburgers.nomoreparties.site/login"
 
