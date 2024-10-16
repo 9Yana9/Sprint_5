@@ -31,3 +31,6 @@ class Locators:
     CONSTRUCTOR_SAUCES = (By.XPATH, "//span[contains(text(), 'Соусы')]")  # Раздел «Соусы» на главной странице
     CONSTRUCTOR_FILLINGS = (By.XPATH, "//span[contains(text(), 'Начинки')]")  # Раздел «Начинки» на главной странице
     CONSTRUCTOR_BUTTON =  (By.XPATH, "//a[contains(@class, 'AppHeader_header__link__3D_hX') and contains(., 'Конструктор')]")
+
+    # Ошибка
+    ERROR_MESSAGE = (By.XPATH, "//p[contains(@class, 'input__error') and text()='Некорректный пароль']")

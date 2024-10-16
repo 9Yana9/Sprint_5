@@ -3,9 +3,11 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from locators import Locators
 
+BASE_URL = "https://stellarburgers.nomoreparties.site/"
+LOGIN_URL = f"{BASE_URL}login"
 
 def login(driver):
-    driver.get("https://stellarburgers.nomoreparties.site/login")
+    driver.get(LOGIN_URL)
     wait = WebDriverWait(driver, 10)
 
     email_input = wait.until(EC.visibility_of_element_located(Locators.EMAIL_INPUT))
@@ -31,16 +33,17 @@ def test_navigate_to_constructor(driver):
     )
     constructor_button.click()
 
-    assert driver.current_url == "https://stellarburgers.nomoreparties.site/"
+    assert driver.current_url == BASE_URL
 
 @pytest.mark.usefixtures("driver")
 def test_navigate_via_logo(driver):
-    driver.get("https://stellarburgers.nomoreparties.site/login")
+    driver.get(LOGIN_URL)
     wait = WebDriverWait(driver, 20)
     logo = wait.until(EC.element_to_be_clickable(Locators.LOGO_BUTTON))
     logo.click()
 
-    wait.until(EC.url_to_be("https://stellarburgers.nomoreparties.site/"))
-    assert driver.current_url == "https://stellarburgers.nomoreparties.site/"
+    wait.until(EC.url_to_be(BASE_URL))
+    assert driver.current_url == BASE_URL
+
 
 
